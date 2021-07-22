@@ -1,29 +1,58 @@
 import 'package:flutter/material.dart';
-import './transaction.dart';
+import 'package:persona_expenses/widgets/new_transcation.dart';
+import 'package:persona_expenses/widgets/transaction_list.dart';
 
-void main(List<String> args) {
+import 'models/transaction.dart';
+
+void main() {
   runApp(MaterialApp(
     home: MyApp(),
   ));
 }
 
-class MyApp extends StatelessWidget {
-  final List<Transaction> transaction = [
-    Transaction(
-        id: 't1', title: 'New shoes', amount: 59.99, date: DateTime.now()),
-    Transaction(id: 't2', title: 'MP3', amount: 19.05, date: DateTime.now()),
-    Transaction(
-        id: 't3', title: 'Apple Earphones', amount: 100, date: DateTime.now())
-  ];
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final List<Transaction> transaction = [];
+
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
+
+  void startNewTransaction(BuildContext context) {
+    showModalBottomSheet(context: context, builder: (_) {
+      return GestureDetector(
+        onTap: (){},
+        behavior: HitTestBehavior.opaque,
+        child:NewTransaction(addTranscations),
+        ); 
+    });
+  }
+
+  void addTranscations(String title,String amount) {
+    var el = Transaction(
+        id: DateTime.now().toString(),
+        title: title,
+        amount: double.parse(amount),
+        date: DateTime.now());
+    setState(() {
+      transaction.add(el);
+    });
+    
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Personal Expenses'),
+        actions: <Widget>[
+        ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
@@ -33,47 +62,13 @@ class MyApp extends StatelessWidget {
               elevation: 5,
             ),
           ),
-          Column(
-            children: transaction.map((e) {
-              return Card(
-                  child: Row(
-                children: <Widget>[
-                  Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                        color: Colors.purple,
-                        width: 2,
-                      )),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        e.amount.toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.purple),
-                      )),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        e.title.toString(),
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Text(e.date.toString(),
-                      style: TextStyle(
-                        color: Colors.grey
-                      ),
-                      ),
-                    ],
-                  )
-                ],
-              ));
-            }).toList(),
-          )
+          
+          TransactionList(transaction),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {startNewTransaction(context);},
+        child: Icon(Icons.add),
       ),
     );
   }
