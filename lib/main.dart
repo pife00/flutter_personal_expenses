@@ -7,6 +7,15 @@ import 'models/transaction.dart';
 void main() {
   runApp(MaterialApp(
     home: MyApp(),
+    title: "Personal Expenses",
+    theme: ThemeData(
+        fontFamily: 'Manjari',
+        primarySwatch: Colors.indigo,
+        accentColor: Colors.indigo[900],
+        inputDecorationTheme: InputDecorationTheme(
+            labelStyle: TextStyle(color: Colors.indigo),
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.indigo)))),
   ));
 }
 
@@ -22,16 +31,18 @@ class _MyAppState extends State<MyApp> {
   final amountController = TextEditingController();
 
   void startNewTransaction(BuildContext context) {
-    showModalBottomSheet(context: context, builder: (_) {
-      return GestureDetector(
-        onTap: (){},
-        behavior: HitTestBehavior.opaque,
-        child:NewTransaction(addTranscations),
-        ); 
-    });
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return GestureDetector(
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+            child: NewTransaction(addTranscations),
+          );
+        });
   }
 
-  void addTranscations(String title,String amount) {
+  void addTranscations(String title, String amount) {
     var el = Transaction(
         id: DateTime.now().toString(),
         title: title,
@@ -40,7 +51,6 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       transaction.add(el);
     });
-    
   }
 
   @override
@@ -48,8 +58,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Personal Expenses'),
-        actions: <Widget>[
-        ],
+        actions: <Widget>[],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -62,12 +71,13 @@ class _MyAppState extends State<MyApp> {
               elevation: 5,
             ),
           ),
-          
           TransactionList(transaction),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {startNewTransaction(context);},
+        onPressed: () {
+          startNewTransaction(context);
+        },
         child: Icon(Icons.add),
       ),
     );

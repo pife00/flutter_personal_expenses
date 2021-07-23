@@ -26,30 +26,12 @@ class _NewTransactionState extends State<NewTransaction> {
               controller: titleController,
               decoration: InputDecoration(
                 labelText: 'Title',
-                labelStyle: TextStyle(color: Colors.purple),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple)),
               ),
             ),
             TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.purple),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.purple),
-                ),
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple)),
                 labelText: 'Amount',
               ),
             ),
@@ -62,7 +44,6 @@ class _NewTransactionState extends State<NewTransaction> {
                   Navigator.of(context).pop();
                 },
                 child: Text('Add Transactions'),
-                style: TextButton.styleFrom(primary: Colors.purple),
               ),
             )
           ],
