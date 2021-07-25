@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
@@ -11,8 +12,28 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
+
+  DateTime _selectedDate = DateTime.now();
+
+  void _presentDatePicker(
+    context,
+  ) {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2021),
+            lastDate: DateTime.now())
+        .then((pickDate) {
+      if (pickDate == null) {
+        return;
+      } else {
+        setState(() {
+          _selectedDate = pickDate;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +56,35 @@ class _NewTransactionState extends State<NewTransaction> {
                 labelText: 'Amount',
               ),
             ),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: TextButton(
-                onPressed: () {
-                  widget.addTransaction(
-                      titleController.text, amountController.text);
-                  Navigator.of(context).pop();
-                },
-                child: Text('Add Transactions'),
-              ),
-            )
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(_selectedDate == null
+                    ? 'wait date'
+                    :'Pick Date: ' + DateFormat.yMd().format(_selectedDate)),
+                Container(
+                  child: TextButton(
+                    onPressed: () {
+                      _presentDatePicker(context);
+                    },
+                    child: Text('Add Date'),
+                  ),
+                ),
+                Container(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      widget.addTransaction(
+                          titleController.text, amountController.text,_selectedDate);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Add Transactions'),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

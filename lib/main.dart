@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persona_expenses/widgets/chart.dart';
 import 'package:persona_expenses/widgets/new_transcation.dart';
 import 'package:persona_expenses/widgets/transaction_list.dart';
 
@@ -30,6 +31,12 @@ class _MyAppState extends State<MyApp> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
+  List<Transaction> get _recentTransactions{
+    return transaction.where((element){
+      return element.date.isAfter(DateTime.now().subtract(Duration(days:7)));
+    }).toList();
+  }
+
   void startNewTransaction(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -42,16 +49,28 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
-  void addTranscations(String title, String amount) {
+  
+
+  void addTranscations(String title, String amount,DateTime pickDate) {
     var el = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: double.parse(amount),
-        date: DateTime.now());
+        date: pickDate);
     setState(() {
       transaction.add(el);
     });
   }
+
+  void deleteTransactions(String id){
+    setState(() {
+      transaction.removeWhere((element) {
+        return element.id == id;
+      });
+    });
+  }
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +83,9 @@ class _MyAppState extends State<MyApp> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Container(
-            width: double.infinity,
-            child: Card(
-              child: Text('Chart'),
-              elevation: 5,
-            ),
-          ),
-          TransactionList(transaction),
+         Chart(_recentTransactions),
+
+          TransactionList(transaction,deleteTransactions),
         ],
       ),
       floatingActionButton: FloatingActionButton(

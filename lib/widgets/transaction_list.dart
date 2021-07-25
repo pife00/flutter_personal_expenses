@@ -4,13 +4,30 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transaction;
+  final Function deleteBtn;
 
-  TransactionList(this.transaction);
+  TransactionList(this.transaction, this.deleteBtn);
 
   @override
   Widget build(BuildContext context) {
-    return transaction == []
-        ? Text("Waiting")
+    return transaction.isEmpty
+        ? Column(
+            children: <Widget>[
+              Text(
+                'No transaction yet',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height / 2,
+                child: Image.asset(
+                  'assets/images/waiting.png',
+                ),
+              )
+            ],
+          )
         : Expanded(
             child: Container(
               child: ListView(
@@ -47,6 +64,15 @@ class TransactionList extends StatelessWidget {
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
+                      ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: IconButton(
+                              onPressed: () {deleteBtn(e.id);},
+                              color: Theme.of(context).primaryColor,
+                              icon: Icon(Icons.delete)),
+                        ),
                       )
                     ],
                   ));
