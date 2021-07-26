@@ -10,6 +10,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.portrait;
+    
     return transaction.isEmpty
         ? Column(
             children: <Widget>[
@@ -20,12 +22,12 @@ class TransactionList extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              Container(
-                height: MediaQuery.of(context).size.height / 2,
+             isLandscape ? Container(
+                height: MediaQuery.of(context).size.height / 3,
                 child: Image.asset(
                   'assets/images/waiting.png',
                 ),
-              )
+              ):SizedBox(),
             ],
           )
         : Expanded(

@@ -37,55 +37,60 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: 'Title',
-              ),
-            ),
-            TextField(
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Amount',
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(_selectedDate == null
-                    ? 'wait date'
-                    :'Pick Date: ' + DateFormat.yMd().format(_selectedDate)),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      _presentDatePicker(context);
-                    },
-                    child: Text('Add Date'),
-                  ),
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom +10
+          ),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: 'Title',
                 ),
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      widget.addTransaction(
-                          titleController.text, amountController.text,_selectedDate);
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Add Transactions'),
-                  ),
+              ),
+              TextField(
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Amount',
                 ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text('Pick Date: ' + DateFormat.yMd().format(_selectedDate)),
+                  Container(
+                    child: TextButton(
+                      onPressed: () {
+                        _presentDatePicker(context);
+                      },
+                      child: Text('Add Date'),
+                    ),
+                  ),
+                  Container(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        widget.addTransaction(
+                            titleController.text, amountController.text,_selectedDate);
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Add Transactions'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
